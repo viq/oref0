@@ -44,6 +44,8 @@ function echocolor() {
 
 for i in "$@"; do
 case $i in
+    --no-git-update)
+    NO_GIT_UPDATE=true
     -d=*|--dir=*)
     DIR="${i#*=}"
     # ~/ paths have to be expanded manually
@@ -688,8 +690,12 @@ if prompt_yn "" N; then
     fi
     mkdir -p $HOME/src/
     if [ -d "$HOME/src/oref0/" ]; then
-        echo "$HOME/src/oref0/ already exists; pulling latest"
-        (cd $HOME/src/oref0 && git fetch && git pull) || die "Couldn't pull latest oref0"
+        if [ $NO_GIT_UPDATE ]; then
+            echo "User requested to not update git checkout"
+         else
+            echo "$HOME/src/oref0/ already exists; pulling latest"
+            (cd $HOME/src/oref0 && git fetch && git pull) || die "Couldn't pull latest oref0"
+         fi
     else
         echo -n "Cloning oref0: "
         (cd $HOME/src && git clone git://github.com/openaps/oref0.git) || die "Couldn't clone oref0"

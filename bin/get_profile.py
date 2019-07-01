@@ -41,6 +41,8 @@ def get_profiles(nightscout, token):
     """
     Get profiles available in nightscout
     """
+    if nightscout.endswith("/"):
+        nightscout = nightscout[:-1]
     r_url = nightscout + "/api/v1/profile.json"
     if token is not None:
         r_url = r_url + "?" + token
@@ -52,6 +54,8 @@ def get_current_profile(nightscout, token, profile_name):
     """
     Try to get the active profile
     """
+    if nightscout.endswith("/"):
+        nightscout = nightscout[:-1]
     r_url = nightscout + "/api/v1/profile.json"
     if token is not None:
         r_url = r_url + "?" + token
